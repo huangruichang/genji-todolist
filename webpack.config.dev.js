@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const apiMocker = require('webpack-api-mocker');
 
 module.exports = {
   mode: 'development',
@@ -20,28 +19,20 @@ module.exports = {
       },
       {
         test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
         use: [
-          'style-loader',
-          'css-loader'
-          //   {
-          //     loader: ,
-          //     options: {
-          //       modules: false
-          //     }
-          //   }
+          {
+            loader: 'file-loader',
+            options: {}
+          }
         ]
       }
     ]
   },
   devtool: 'inline-source-map',
-  //   devServer: {
-  //     before(app) {
-  //       apiMocker(app, path.resolve('mock/api.js'));
-  //     },
-  //     contentBase: path.resolve(__dirname, '..', 'dist'),
-  //     compress: true,
-  //     port: 8083
-  //   },
   plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
   resolve: {
     alias: {},
