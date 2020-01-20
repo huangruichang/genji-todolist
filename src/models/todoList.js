@@ -6,31 +6,32 @@ export default {
     todos: [],
     visibilityFilter: VisibilityFilters.SHOW_ALL
   },
-  reducers: {
-    add(state, { payload }) {
-      state.todos.push(payload.todo);
-      return {
-        todos: [...state.todos]
-      };
+  actionCreators: {
+    async addAsync({ payload }, { pick, save }) {
+      const todos = pick('todos');
+      await new Promise(resolve =>
+        setTimeout(() => {
+          resolve();
+        }, 500)
+      );
+      save({ todos: [...todos, payload.todo] });
     },
-    setVisibilityFilter(state, { payload }) {
-      return {
-        visibilityFilter: payload.visibilityFilter
-      };
+    setVisibilityFilter({ payload }, { pick, save }) {
+      save({ visibilityFilter: payload.visibilityFilter });
     },
-    toggle(state, { payload }) {
-      return {
-        todos: state.todos.map(todo => {
-          if (todo.id === payload.todo.id) {
-            return {
-              ...todo,
-              completed: !todo.completed
-            };
-          } else {
-            return todo;
-          }
-        })
-      };
+    toggle({ payload }, { save, pick }) {
+      let todos = pick('todos');
+      todos = todos.map(todo => {
+        if (todo.id === payload.todo.id) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          };
+        } else {
+          return todo;
+        }
+      });
+      save({ todos });
     }
   }
 };

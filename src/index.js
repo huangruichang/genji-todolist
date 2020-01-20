@@ -7,7 +7,7 @@ import App from './components/App';
 import "antd/dist/antd.css";
 import './global.css';
 
-const genji = new Genji({ injectEffectLoading: true, autoUpdateEffectLoading: true });
+const genji = new Genji({ injectAsyncLoading: true, autoUpdateAsyncLoading: true });
 genji.model(todoList);
 genji.start();
 
