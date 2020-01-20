@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Input } from 'antd';
 
 const { Search } = Input;
 
-const AddTodo = ({ dispatch }) => {
-  let input;
+const AddTodo = props => {
+  const { dispatch } = props;
+
+  const [inputValue, setInputValue] = useState('');
 
   return (
     <div style={{ marginTop: 20, marginBottom: 20 }}>
       <Search
+        onChange={e => setInputValue(e.target.value)}
+        value={inputValue}
         onSearch={value => {
           if (!value) return;
           dispatch({
-            type: 'todoList/add',
+            type: 'todoList/addAsync',
             payload: {
               todo: {
                 id: new Date().getTime(),
@@ -22,13 +26,19 @@ const AddTodo = ({ dispatch }) => {
               }
             }
           });
-          input.input.input.value = '';
+          setInputValue('');
         }}
-        ref={node => (input = node)}
         enterButton="Add Todo"
-      ></Search>
+        loading={props.addAsyncLoading}
+      />
     </div>
   );
 };
 
-export default connect()(AddTodo);
+const mapStateToProps = state => {
+  return {
+    ...state.todoList
+  };
+};
+
+export default connect(mapStateToProps)(AddTodo);

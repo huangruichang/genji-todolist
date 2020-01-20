@@ -43,6 +43,7 @@
     "@babel/preset-react": "^7.6.3",
     "antd": "^3.26.6",
     "genji": "git+https://github.com/kelekexiao123/genjijs.git",
+    "genjijs": "^0.3.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",

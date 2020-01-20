@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
-import { Tabs } from 'antd';
+import { Tabs, Spin } from 'antd';
 import { VisibilityFilters } from '../constants';
 import genjiPic from '../assets/genji.png';
 
@@ -20,18 +20,17 @@ const TodoList = ({ todos, toggleTodo, alltodos }) =>
     </div>
   );
 
-export const TodoListPanel = ({ todos, alltodos, toggleTodo, setVisibilityFilter }) => {
+export const TodoListPanel = ({ todos, alltodos, toggleTodo, setVisibilityFilter, addAsyncLoading }) => {
+  const tablistKey = [VisibilityFilters.SHOW_ALL, VisibilityFilters.SHOW_COMPLETED, VisibilityFilters.SHOW_ACTIVE];
   return (
     <Tabs defaultActiveKey={VisibilityFilters.SHOW_ALL} onChange={key => setVisibilityFilter(key)}>
-      <TabPane tab={VisibilityFilters.SHOW_ALL} key={VisibilityFilters.SHOW_ALL}>
-        <TodoList todos={todos} toggleTodo={toggleTodo} alltodos={alltodos} />
-      </TabPane>
-      <TabPane tab={VisibilityFilters.SHOW_COMPLETED} key={VisibilityFilters.SHOW_COMPLETED}>
-        <TodoList todos={todos} toggleTodo={toggleTodo} alltodos={alltodos} />
-      </TabPane>
-      <TabPane tab={VisibilityFilters.SHOW_ACTIVE} key={VisibilityFilters.SHOW_ACTIVE}>
-        <TodoList todos={todos} toggleTodo={toggleTodo} alltodos={alltodos} />
-      </TabPane>
+      {tablistKey.map(key => (
+        <TabPane tab={key} key={key}>
+          <Spin spinning={addAsyncLoading}>
+            <TodoList todos={todos} toggleTodo={toggleTodo} alltodos={alltodos} />
+          </Spin>
+        </TabPane>
+      ))}
     </Tabs>
   );
 };
